@@ -3,6 +3,7 @@
 <jsp:include page="header.jsp"/>
 
 <article>
+
 	<h1>Bonjour <c:out value="${sessionScope.firstName }"/></h1>
 		
 </article>

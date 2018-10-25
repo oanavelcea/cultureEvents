@@ -10,9 +10,6 @@ public class LoginForm {
 	@Pattern(regexp="\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b", message="Invalid Email")
 	private String username;
 	
-	
-	
-	
 	@NotEmpty
 	@Size(min=4, max=50)
 	private String password;
