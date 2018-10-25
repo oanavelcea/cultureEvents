@@ -1,5 +1,7 @@
 package fr.dawan.cultureEvents;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +33,7 @@ public class SignupController {
 	public ModelAndView signup() {
 			Map<String,	Object> model = new HashMap<>();
 			//récupération de l'objet SignUpForm
-			SignUpForm form = new SignUpForm("", Gender.M, "", "", "", DateUtils.asDate(LocalDate.now()));
+			SignUpForm form = new SignUpForm("", "M", "", "", "", "");
 			model.put("signup-form", form);
 			return new ModelAndView("signup", model);
 	}
@@ -55,8 +57,16 @@ public class SignupController {
 		u.setEmail(form.getEmail());
 		u.setPassword(form.getPassword());
 		u.setAddress(form.getAddress());
-		u.setGender(form.getGender());
-		u.setDateOfBirth(form.getDateOfBirth());
+		u.setGender(Enum.valueOf(Gender.class, form.getGender()));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			u.setDateOfBirth(sdf.parse(form.getDateOfBirth()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
 		userDao.save(u);
 	
 		return new ModelAndView("client/accueilClient",model);

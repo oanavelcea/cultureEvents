@@ -6,6 +6,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import fr.dawan.cultureEvents.beans.User.Gender;
 
 public class SignUpForm {
@@ -14,7 +16,7 @@ public class SignUpForm {
 	private String name;
 
 	@NotEmpty
-	private Gender gender;
+	private String gender;
 
 	@NotEmpty
 	@Pattern(regexp = "\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b", message = "Invalid Email")
@@ -28,13 +30,14 @@ public class SignUpForm {
 	private String address;
 
 	@NotEmpty
-	private Date dateOfBirth;
+	@DateTimeFormat(pattern="dd/MM/yyyy")
+	private String dateOfBirth;
 
 	public SignUpForm() {
 
 	}
 
-	public SignUpForm(String name, Gender gender, String email, String password, String address, Date dateOfBirth) {
+	public SignUpForm(String name, String gender, String email, String password, String address, String dateOfBirth) {
 		super();
 		this.name = name;
 		this.gender = gender;
@@ -52,11 +55,11 @@ public class SignUpForm {
 		this.name = name;
 	}
 
-	public Gender getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
@@ -84,11 +87,11 @@ public class SignUpForm {
 		this.address = address;
 	}
 
-	public Date getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
