@@ -25,12 +25,20 @@ public class TestDataController {
 			
 		 
 		 User u1 = new User();
-		 u1.setEmail("ioana@modis.fr");
+		 u1.setEmail("cindy@modis.fr");
 		 u1.setAdmin(true);
-		 u1.setPassword("ioana");
+		 u1.setPassword("cindy");
 		 u1.setAddress("rue de la paix Lille");
-		 u1.setName("IOANA");
+		 u1.setName("cindy");
 		 u1.setGender(Gender.MME);
+		 
+		 User u2 = new User();
+		 u2.setEmail("Jose@dawan.fr");
+		 u2.setAdmin(true);
+		 u2.setPassword("José");
+		 u2.setAddress("rue de la paix Lille");
+		 u2.setName("José");
+		 u2.setGender(Gender.M);
 		 
 		 
 		 userDao.save(u1);
