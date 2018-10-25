@@ -17,6 +17,8 @@
 	<br />
 	<a href="authenticate">Login</a>
 	<br />
+	<a href="signup">S'inscrire</a>
+	<br />
 	
 	<table class="table table-striped table-grey" border="">
 				<tr>
