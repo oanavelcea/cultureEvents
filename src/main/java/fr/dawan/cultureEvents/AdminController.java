@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +19,18 @@ import fr.dawan.cultureEvents.dao.UserDao;
 import fr.dawan.cultureEvents.formbeans.LoginForm;
 
 @Controller
-public class AdminUserController {
+public class AdminController {
 
 	@Autowired
 	private UserDao userDao;
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+	
+	@RequestMapping(value="/admin/dashboard", method=RequestMethod.GET)
+	public String showAdminDashboard() {
+		return "admin/dashboard";
 	}
 	
 	@RequestMapping(value = "/admin/liste-utilisateurs", method = RequestMethod.GET)
@@ -42,6 +49,12 @@ public class AdminUserController {
 		model.addAttribute("page", page);
 		
 		return "admin/users";
+	}
+	
+	@RequestMapping(value="/admin/disconnect", method=RequestMethod.GET)
+	public String disconnect(HttpServletRequest request) {
+		request.getSession().invalidate();
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/admin/modifier-utilisateur", method = RequestMethod.GET)

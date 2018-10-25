@@ -3,84 +3,77 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<title>Home</title>
-	<link rel="stylesheet" href="" />
-	<script type="text/javascript" src="resources/jquery-ui/external/jquery/jquery.js"></script>
-</head>
-<body>
-	<h1>Culture Events</h1>	
 
-	<a href="test-data">Insérer des données de test</a>
-	<br />
-	<a href="authenticate">Login</a>
-	<br />
-	<a href="signup">S'inscrire</a>
-	<br />
 	
-	<table class="table table-striped table-grey" border="">
-				<tr>
-
-					<th>Latitude-Longitude</th>
-
-					<th>Title</th>
-					<th>Lang</th>
-					<th>City</th>
-					<th>Date start</th>
-					<th>Date end</th>
-					<th>Placename</th>
-					<th>Uid</th>
-					<th>Image</th>
-					<th>Space time info</th>
-					<th>Department</th>
-					<th>Link</th>
-					<th>Address</th>
-					<th>Region</th>
-					<th>Image thumb</th>
-					<th>Description</th>
-					<th>Tags</th>
-					<th>Updated at</th>
-					<th>Timetable</th>
-				</tr>
-				<c:forEach var="evt" items="${events}">
-					<tr>
-						<td>${evt.latitude}-${evt.longitude}</td>
-						<td width="50%">${evt.title}</td>
-						<td>${evt.lang}</td>
-						<td>${evt.city}</td>
-						<td><fmt:formatDate value="${evt.dateStart}" pattern="dd/MM/yyyy" /></td>
-						<td><fmt:formatDate value="${evt.dateEnd}" pattern="dd/MM/yyyy" /></td>
-						<td>${evt.placename}</td>
-						<td>${evt.uid}</td>
-						
-						<td>
-							<img src="${evt.image}" alt="Image" />
-						</td>
-						
-						<td>${evt.spaceTimeInfo}</td>
-						
-						<td>${evt.department}</td>
-						
-						<td><a href="${evt.link}" title="Lien event" target="blank">Lien de l'événement</a></td>
-						<td>${evt.address}</td>
-						<td>${evt.region}</td>
-						<td><img src="${evt.imageThumb}" alt="Image thumb" /></td>
-						<td>${evt.description}</td>
-						<td><c:forEach var="tg" items="${evt.tags}">
-								<c:out value="${tg}" />
-								<br />
-							</c:forEach></td>
-						<td>${evt.updatedAt}</td>
-						<td><c:forEach var="tt" items="${evt.timeTable}">
-								<c:out value="${tt}" />
-								<br />
-							</c:forEach></td>
-					</tr>
-				</c:forEach>
-			</table>
+<a href="test-data">Insérer des données de test</a>
+<br />
 	
+<h1 class="my-4">Evénements de la métropole de Lille</h1>	
 	
-</body>
-</html>
+	<div class="row">
+	<c:forEach var="evt" items="${events}" varStatus="st">
+	    
+	        <div class="col-sm-6 col-md-4 col-lg-3 portfolio-item">
+	          <div class="card h-100">
+	            <a href="#"><img class="card-img-top" src="${evt.image}" alt=""></a>
+	            <div class="card-body">
+	              <h4 class="card-title">
+	                <a href="${evt.link}" target="blank" title="Lien de l'événement">${evt.title}</a>
+	              </h4>
+	              <p class="card-text">
+	             	<span>${evt.description}</span>
+	             	 <br />
+	              	
+	              	<strong>
+	              		<fmt:formatDate value="${evt.dateStart}" pattern="dd/MM/yyyy" /> - 
+	              		<fmt:formatDate value="${evt.dateEnd}" pattern="dd/MM/yyyy" />
+	              	</strong>
+	              	<br />	
+	              	<span>${evt.spaceTimeInfo}</span> 
+	              	<br />
+	              	<span>${pricingInfo}</span>
+	              </p>
+	              <p>
+	             	<span>${evt.placename}</span> - <span>${evt.city}</span>
+	              	<br />
+	              	<span>${evt.address}</span>
+	              </p>
+	              <p>
+	              	<span>
+	              		<c:forEach var="tg" items="${evt.tags}">
+							<c:out value="${tg}" />
+							<br />
+						</c:forEach>
+					</span>
+					<br />
+					<span>
+						<c:forEach var="tt" items="${evt.timeTable}">
+							<c:out value="${tt}" />
+							<br />
+						</c:forEach>
+					</span>
+	              </p>
+	            </div>
+	          </div>
+	        </div>
+		</c:forEach>
+		</div>
+		
+		<!-- <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">«</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">1</a>
+        </li>
+        
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">»</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul> -->

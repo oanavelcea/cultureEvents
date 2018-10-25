@@ -16,7 +16,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		//récupérer l'urlDemandee
 		String requestedURI = request.getRequestURI();
 		//si l'url demandée est /achats alors
-		if(requestedURI.contains("/front/") || requestedURI.contains("/admin/") ) {
+		if(requestedURI.contains("/client/") || requestedURI.contains("/admin/") ) {
 			//récupérer la session
 			HttpSession session = request.getSession();
 			//tester la présence de isConnected

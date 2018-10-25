@@ -33,7 +33,7 @@ public class UserDao {
 	
 	
 	@Transactional(readOnly=true)
-	public User findById(int id) {
+	public User findById(long id) {
 		return hibernateTemplate.get(User.class, id);
 	}
 	

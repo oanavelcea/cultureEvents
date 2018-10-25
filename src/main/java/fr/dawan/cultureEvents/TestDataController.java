@@ -34,7 +34,7 @@ public class TestDataController {
 		 
 		 User u2 = new User();
 		 u2.setEmail("Jose@dawan.fr");
-		 u2.setAdmin(true);
+		 u2.setAdmin(false);
 		 u2.setPassword("José");
 		 u2.setAddress("rue de la paix Lille");
 		 u2.setName("José");
@@ -43,7 +43,7 @@ public class TestDataController {
 		 
 		 userDao.save(u1);
 		 
-			return "home";
+			return "front/home";
 		}
 		
 	 

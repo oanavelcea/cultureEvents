@@ -1,21 +1,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<jsp:include page="header.jsp"/>
+
 
 
 <div class="col-md-12">
 	<h4>Liste des utilisateurs</h4>
     <div class="table-responsive">
         <table id="mytable" class="table table-bordred table-striped">
-             <thead>
+             <tr>
                  <th>Nom</th>
                  <th>Email</th>
                  <th>Admin ?</th>
                  <th>Modifier</th>
 				 <th>Supprimer</th>
-             </thead>
-    		 <tbody>
-	    		<c:forEach var="u" items="${users}">
+             </tr>
+    		 	<c:forEach var="u" items="${users}">
 	    		<tr>
 		    			<td>${u.name}</td>
 		    			<td>${u.email}</td>
@@ -29,7 +28,6 @@
 		    			<td><a href="admin/supprimer-utilisateur?id=${u.id}">Supprimer</a></td>
 		    		</tr>
 	    		</c:forEach>
-    		  </tbody>
 		 	</table>
 			<div class="clearfix"></div>
 
@@ -46,4 +44,3 @@
 </div>
 
 
-<jsp:include page="footer.jsp"/>

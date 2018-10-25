@@ -22,8 +22,9 @@ public class JsonTools {
 
 	public static String BASE_WS_URL = "https://opendata.lillemetropole.fr/";
 	public static List<Event> importAllEventsFromJson() throws Exception {
-		String link = BASE_WS_URL + "api/records/1.0/search/?dataset=evenements-publics-openagenda&facet=tags&facet=placename&facet=department&facet=region&facet=city&facet=date_start&facet=date_end&facet=pricing_info&facet=updated_at&facet=city_district";
-
+		//String link = BASE_WS_URL + "api/records/1.0/search/?dataset=evenements-publics-openagenda&facet=tags&facet=placename&facet=department&facet=region&facet=city&facet=date_start&facet=date_end&facet=pricing_info&facet=updated_at&facet=city_district";
+		//String link = BASE_WS_URL + "/api/records/1.0/search/?dataset=evenements-publics-openagenda&rows=50&sort=date_start&facet=tags&facet=placename&facet=department&facet=region&facet=city&facet=date_start&facet=date_end&facet=pricing_info&facet=updated_at&facet=city_district";
+		String link = BASE_WS_URL + "/api/records/1.0/search/?dataset=evenements-publics-openagenda&rows=50&sort=date_start&facet=tags&facet=placename&facet=department&facet=region&facet=city&facet=date_start&facet=date_end&facet=pricing_info&facet=updated_at&facet=city_district"; 
 		Client client = ClientBuilder.newClient().register(JacksonFeature.class);
 		
 
@@ -149,7 +150,14 @@ public class JsonTools {
 			} catch (Exception e) {// absence d'icone
 				evt.setImageThumb("");
 			}
+			
+			try {
+				evt.setPricingInfo(objRFields.getString("pricing_info"));
+			} catch (Exception e) {// absence d'icone
+				evt.setPricingInfo("");
+			}
 
+			
 			try {
 				evt.setDescription(objRFields.getString("description"));// "description":"Fêtes estivales"}
 			} catch (Exception e) {

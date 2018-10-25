@@ -26,6 +26,9 @@ public class LoginController {
 	@Autowired
 	private UserDao userDao;
 	
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
 	
 	@RequestMapping("/authenticate")//@requestMapping(value="/autenticate", method=RequestMethod.GET)
 	public ModelAndView showLogin() {
@@ -37,40 +40,38 @@ public class LoginController {
 	
 
 	@RequestMapping(value="/check-login", method=RequestMethod.POST)
-	public ModelAndView checkLogin(HttpServletRequest request,
-			@Valid @ModelAttribute("login-form")LoginForm form, BindingResult result) {
-		Map<String,	Object> model = new HashMap<>();
+	public String checkLogin(HttpServletRequest request,
+			@Valid @ModelAttribute("login-form")LoginForm form, BindingResult result, Model model) {
 		
 		if(result.hasErrors()) {
-			model.put("errors",result);
-			model.put("login-form", form);
-			return new ModelAndView("login",model);
+			model.addAttribute("errors",result);
+			model.addAttribute("login-form", form);
+			return "login";
 		}
 		
 		User u = userDao.findByEmail(form.getUsername());
 		if(u!=null && u.getPassword().equals(form.getPassword()))
 		{
 			request.getSession().setAttribute("user_id", u.getId());
+			request.getSession().setAttribute("user_name", u.getName());
 			if(u.isAdmin())
-				return new ModelAndView("admin/dashboard");
+				return "redirect:/admin/dashboard";
 			else
-				return new ModelAndView("client/accueilClient");
+				return "redirect:/client/account";
 			
 		}else {
-			model.put("login-form", form);
-			model.put("msg", "Error : incorrect login or password !");
-			return new ModelAndView("login",model);
+			model.addAttribute("login-form", form);
+			model.addAttribute("msg", "Error : incorrect login or password !");
+			return "login";
 		}
 		
 	}
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
+	
+	
+	
 
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
+	
 	
 	
 	

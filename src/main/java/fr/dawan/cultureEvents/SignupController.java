@@ -69,7 +69,7 @@ public class SignupController {
 		
 		userDao.save(u);
 	
-		return new ModelAndView("client/accueilClient",model);
+		return new ModelAndView("client/account",model);
 	}
 	
 }
