@@ -25,59 +25,42 @@ public class LoginController {
 
 	@Autowired
 	private UserDao userDao;
-	
+
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
-	@RequestMapping("/authenticate")//@requestMapping(value="/autenticate", method=RequestMethod.GET)
-	public ModelAndView showLogin() {
-			Map<String,	Object> model = new HashMap<>();
-			LoginForm lf = new LoginForm("","");
-			model.put("login-form", lf);
-			return new ModelAndView("login", model);
-	}
-	
 
-	@RequestMapping(value="/check-login", method=RequestMethod.POST)
-	public String checkLogin(HttpServletRequest request,
-			@Valid @ModelAttribute("login-form")LoginForm form, BindingResult result, Model model) {
-		
-		if(result.hasErrors()) {
-			model.addAttribute("errors",result);
+	@RequestMapping("/authenticate") // @requestMapping(value="/autenticate", method=RequestMethod.GET)
+	public ModelAndView showLogin() {
+		Map<String, Object> model = new HashMap<>();
+		LoginForm lf = new LoginForm("", "");
+		model.put("login-form", lf);
+		return new ModelAndView("login", model);
+	}
+
+	@RequestMapping(value = "/check-login", method = RequestMethod.POST)
+	public String checkLogin(HttpServletRequest request, @Valid @ModelAttribute("login-form") LoginForm form,
+								BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("errors", result);
 			model.addAttribute("login-form", form);
 			return "login";
 		}
-		
+
 		User u = userDao.findByEmail(form.getUsername());
-		if(u!=null && u.getPassword().equals(form.getPassword()))
-		{
+		
+		if (u != null && u.getPassword().equals(form.getPassword())) {
 			request.getSession().setAttribute("user_id", u.getId());
 			request.getSession().setAttribute("user_name", u.getName());
-			if(u.isAdmin())
+			if (u.isAdmin())
 				return "redirect:/admin/dashboard";
 			else
 				return "redirect:/client/account";
-			
-		}else {
+		} else {
 			model.addAttribute("login-form", form);
 			model.addAttribute("msg", "Error : incorrect login or password !");
 			return "login";
 		}
-		
 	}
 
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -52,6 +52,11 @@ public class UserDao {
 		return (Long)hibernateTemplate.find("SELECT COUNT(c.id) FROM User c").get(0);
 	}
 	
+	@Transactional(readOnly=false)
+	public void delete(long id) {
+		hibernateTemplate.delete(findById(id));
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
