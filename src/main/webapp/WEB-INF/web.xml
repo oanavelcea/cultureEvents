@@ -20,7 +20,7 @@
     <servlet-name>appServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  <servlet>
+ <!--  <servlet>
     <description></description>
     <display-name>WSEventController</display-name>
     <servlet-name>WSEventController</servlet-name>
@@ -29,7 +29,7 @@
   <servlet-mapping>
     <servlet-name>WSEventController</servlet-name>
     <url-pattern>/WSEventController</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   
   
   <filter>

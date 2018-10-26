@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import fr.dawan.cultureEvents.beans.Event;
 import fr.dawan.cultureEvents.dao.JsonTools;
+import fr.dawan.cultureEvents.tools.EmailTools;
 
 /**
  * Handles requests for the application home page.

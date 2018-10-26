@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <decorators defaultdir="/WEB-INF/views">
     <decorator name="front" page="template-front.jsp">
-       <pattern>/*</pattern>
+        <pattern>/*</pattern>
         <pattern>/home.jsp</pattern>
         <pattern>/signup.jsp</pattern>
         <pattern>/login.jsp</pattern>
