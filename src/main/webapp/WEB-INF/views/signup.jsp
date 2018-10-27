@@ -18,7 +18,7 @@
 
 		<p>
 			<form:label path="gender">Civilité :</form:label>
-			<form:select path="gender">
+			<form:select path="gender" class="custom-select col-sm-1">
 				<form:option value="M">M</form:option>
 				<form:option value="MME">MME</form:option>
 			</form:select>
@@ -32,9 +32,21 @@
 		<form:input path="address" />
 		<br />
 
-		<form:label path="dateOfBirth">Votre année de naissance :</form:label>
-		<form:input path="dateOfBirth" />
+		<fieldset >
+			<legend>Date de naissance</legend>
+			
+			<form:label path="day" class="mr-sm-2" for="inlineFormCustomSelect"> Jour : </form:label>
+			<form:select path="day" items="${days }" class="custom-select col-sm-1" id="inlineFormCustomSelect"/>
+			
+			<form:label path="month" class="mr-sm-2" for="inlineFormCustomSelect"> Mois : </form:label>
+			<form:select path="month" items="${months }" class="custom-select col-sm-1" id="inlineFormCustomSelect"/>
+			
+			<form:label path="year" class="mr-sm-2" for="inlineFormCustomSelect"> Année : </form:label>
+			<form:select path="year" items="${years }" class="custom-select col-sm-1" id="inlineFormCustomSelect"/>
+			
+		</fieldset>
 		<br />
+
 
 		<form:label path="email">Email :</form:label>
 		<form:input path="email" />

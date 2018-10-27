@@ -1,9 +1,12 @@
 package fr.dawan.cultureEvents;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,6 @@ import fr.dawan.cultureEvents.beans.User;
 import fr.dawan.cultureEvents.beans.User.Gender;
 import fr.dawan.cultureEvents.dao.UserDao;
 import fr.dawan.cultureEvents.formbeans.SignUpForm;
-import fr.dawan.cultureEvents.tools.DateUtils;
 
 @Controller
 public class SignupController {
@@ -33,8 +35,26 @@ public class SignupController {
 	public ModelAndView signup() {
 		Map<String, Object> model = new HashMap<>();
 		// r√©cup√©ration de l'objet SignUpForm
-		SignUpForm form = new SignUpForm("", "M", "", "", "", "");
+		SignUpForm form = new SignUpForm("", "M", "", "", "", 1, 1, 1970);
 		model.put("signup-form", form);
+		List days = new ArrayList();
+		for(int i = 1; i<=31; i++) {
+			days.add(i);
+		}
+		List months = new ArrayList<>();
+		for(int i = 1; i<=12; i++) {
+			months.add(i);
+		}
+		
+		List years = new ArrayList<>();
+		for(int i = 1900; i<=2018; i++) {
+			years.add(i);
+		}
+		
+		model .put("days", days);
+		model .put("months", months);
+		model .put("years", years);
+		
 		return new ModelAndView("signup", model);
 	}
 
@@ -42,6 +62,7 @@ public class SignupController {
 	public ModelAndView checkLogin(HttpServletRequest request, @Valid @ModelAttribute("signup-form") SignUpForm form,
 			BindingResult result) {
 		Map<String, Object> model = new HashMap<>();
+
 
 		if (result.hasErrors()) {
 			model.put("errors", result);
@@ -56,12 +77,21 @@ public class SignupController {
 		u.setAddress(form.getAddress());
 		u.setGender(Enum.valueOf(Gender.class, form.getGender()));
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		//RÈupÈration et transformtion de la date de naissance au format sql
+		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date utilDate = new Date();
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		u.setCreationDate(sqlDate);
+		
 		try {
-			u.setDateOfBirth(sdf.parse(form.getDateOfBirth()));
+			u.setDateOfBirth(sdf.parse(date));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
 
 		userDao.save(u);
 
