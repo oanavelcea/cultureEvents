@@ -1,6 +1,8 @@
 package fr.dawan.cultureEvents;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +43,11 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/liste-utilisateurs", method = RequestMethod.GET)
-	public String listerUtilisateurs(@RequestParam(name="page", required=false) Integer page, 
-									@RequestParam(name="max", required=false) Integer max, Model model) {
-		if (max==null || max == 0)
+	public String listerUtilisateurs(@RequestParam(name = "page", required = false) Integer page,
+			@RequestParam(name = "max", required = false) Integer max, Model model) {
+		if (max == null || max == 0)
 			max = 15;
-		if (page==null || page == 0)
+		if (page == null || page == 0)
 			page = 1;
 
 		int start = (page - 1) * max;
@@ -67,49 +69,71 @@ public class AdminController {
 		return "redirect:/";
 	}
 
-	
 	@RequestMapping(value = "/admin/supprimer-utilisateur", method = RequestMethod.GET)
-	public String deleteUser(@RequestParam(name="id", required=false) long id, Model model) {
+	public String deleteUser(@RequestParam(name = "id", required = false) long id, Model model) {
 		try {
 			userDao.delete(id);
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return "redirect:/admin/liste-utilisateurs";
 	}
-	
-	// PrÃ©paration du model et redirection vers le formulaire de modification
-		@RequestMapping(value = "/admin/modifier-utilisateur", method = RequestMethod.GET)
-		public ModelAndView modifierUser(@RequestParam(name="id", required=false) long id) {
-			Map<String, Object> model = new HashMap<>();
-			
-			User user = userDao.findById(id);
-			String dateBirthStr = new SimpleDateFormat("dd/MM/yyyy").format(user.getDateOfBirth());
-			EditUserForm form = new EditUserForm(user.getName(), user.getGender().toString(), user.getEmail(), user.getPassword(), user.getAddress(), dateBirthStr, user.isAdmin());
-			form.setId(user.getId());
-			model.put("edit-user-form", form);
 
-			return new ModelAndView("admin/edituser", model);
+	// PrÃ©paration du model et redirection vers le formulaire de modification
+	@RequestMapping(value = "/admin/modifier-utilisateur", method = RequestMethod.GET)
+	public ModelAndView modifierUser(@RequestParam(name = "id", required = false) long id) {
+		Map<String, Object> model = new HashMap<>();
+
+		User user = userDao.findById(id);
+		String dateBirthStr = new SimpleDateFormat("dd/MM/yyyy").format(user.getDateOfBirth());
+
+		// Récupération du jour, mois et année pour le formulaire
+		String[] dateSplit = dateBirthStr.split("/");
+		int day = Integer.parseInt(dateSplit[0]);
+		int month = Integer.parseInt(dateSplit[1]);
+		int year = Integer.parseInt(dateSplit[2]);
+
+		List days = new ArrayList();
+		for (int i = 1; i <= 31; i++) {
+			days.add(i);
+		}
+		List months = new ArrayList<>();
+		for (int i = 1; i <= 12; i++) {
+			months.add(i);
 		}
 
+		List years = new ArrayList<>();
+		for (int i = 1900; i <= 2018; i++) {
+			years.add(i);
+		}
+
+		EditUserForm form = new EditUserForm(user.getName(), user.getGender().toString(), user.getEmail(),
+				user.getPassword(), user.getAddress(), day, month, year, user.isAdmin());
+		form.setId(user.getId());
+		model.put("edit-user-form", form);
+		
+		model.put("days", days);
+		model.put("months", months);
+		model.put("years", years);
+
+		return new ModelAndView("admin/edituser", model);
+	}
 
 	// Controle des Ã©lÃ©ments issus du formulaire
 	@RequestMapping(value = "/admin/save-user", method = RequestMethod.POST)
 	public ModelAndView updateUser(HttpServletRequest request,
-			@Valid @ModelAttribute("edit-user-form") EditUserForm form, BindingResult result) throws java.text.ParseException {
+			@Valid @ModelAttribute("edit-user-form") EditUserForm form, BindingResult result)
+			throws java.text.ParseException {
 		Map<String, Object> model = new HashMap<>();
 
-		System.out.println("dans updateUser");
-
 		if (result.hasErrors()) {
-			System.out.println("dans hasError");
 			model.put("errors", result);
 			model.put("edit-user-form", form);
 			return new ModelAndView("admin/edituser", model);
 		}
 
 		// enregistrement des donnÃ©es dans la BDD
-		//long id = 
+		// long id =
 		User user = userDao.findById(form.getId());
 		user.setName(form.getName());
 		user.setAdmin(false);
@@ -117,11 +141,21 @@ public class AdminController {
 		user.setPassword(form.getPassword());
 		user.setAddress(form.getAddress());
 		user.setGender(Enum.valueOf(Gender.class, form.getGender()));
+
+		// Réupération et transformtion de la date de naissance au format sql
+		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Date utilDate = new Date();
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		user.setCreationDate(sqlDate);
+
 		try {
-			user.setDateOfBirth(new SimpleDateFormat("dd/MM/yyyy").parse(form.getDateOfBirth()));
-			//sauvegarde des modifs en Bdd
+			user.setDateOfBirth(sdf.parse(date));
+			// sauvegarde des modifs en Bdd
 			userDao.update(user);
-			
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 			model.put("errors", result);

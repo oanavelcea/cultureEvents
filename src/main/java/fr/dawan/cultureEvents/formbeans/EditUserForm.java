@@ -27,9 +27,16 @@ public class EditUserForm {
 	@NotEmpty
 	private String	address;
 
-	@NotEmpty
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private String	dateOfBirth;
+//	@NotEmpty
+//	@DateTimeFormat(pattern = "dd/MM/yyyy")
+//	private String	dateOfBirth;
+	
+//	@NotEmpty
+	private int day;
+//	@NotEmpty
+	private int month;
+//	@NotEmpty
+	private int year;
 
 	private boolean	admin;
 
@@ -37,15 +44,18 @@ public class EditUserForm {
 
 	}
 
-	public EditUserForm(String name, String gender, String email, String password, String address, String dateOfBirth,
-			boolean admin) {
+	public EditUserForm(String name, String gender, String email, String password, String address,
+			int day, int month, int year,  boolean admin) {
 		super();
 		this.name = name;
 		this.gender = gender;
 		this.email = email;
 		this.password = password;
 		this.address = address;
-		this.dateOfBirth = dateOfBirth;
+//		this.dateOfBirth = dateOfBirth;
+		this.day = day;
+		this.month = month;
+		this.year = year;
 		this.admin = admin;
 	}
 
@@ -96,13 +106,39 @@ public class EditUserForm {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	
 
-	public String getDateOfBirth() {
-		return dateOfBirth;
+//	public String getDateOfBirth() {
+//		return dateOfBirth;
+//	}
+//
+//	public void setDateOfBirth(String dateOfBirth) {
+//		this.dateOfBirth = dateOfBirth;
+//	}
+
+	public int getDay() {
+		return day;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setDay(int day) {
+		this.day = day;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 
 	public Long getId() {

@@ -2,6 +2,9 @@ package fr.dawan.cultureEvents;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -41,13 +44,39 @@ public class ClientController {
 		return "redirect:/";
 	}
 
-	//Affichage du formulaire des coordonnÃ©es rempli
+	// Affichage du formulaire des coordonnÃ©es rempli
 	@RequestMapping("/client/coordonnees-utilisateur")
 	public String displayUserDetails(@RequestParam("id") long id, Model model) {
 		User user = userDao.findById(id);
 		String dateBirthStr = new SimpleDateFormat("dd/MM/yyyy").format(user.getDateOfBirth());
-		EditUserForm form = new EditUserForm(user.getName(), user.getGender().toString(), user.getEmail(), user.getPassword(), user.getAddress(), dateBirthStr, user.isAdmin());
+
+		// Récupération du jour, mois et année pour le formulaire
+		String[] dateSplit = dateBirthStr.split("/");
+		int day = Integer.parseInt(dateSplit[0]);
+		int month = Integer.parseInt(dateSplit[1]);
+		int year = Integer.parseInt(dateSplit[2]);
+
+		List days = new ArrayList();
+		for (int i = 1; i <= 31; i++) {
+			days.add(i);
+		}
+		List months = new ArrayList<>();
+		for (int i = 1; i <= 12; i++) {
+			months.add(i);
+		}
+
+		List years = new ArrayList<>();
+		for (int i = 1900; i <= 2018; i++) {
+			years.add(i);
+		}
+
+		EditUserForm form = new EditUserForm(user.getName(), user.getGender().toString(), user.getEmail(),
+				user.getPassword(), user.getAddress(), day, month, year, user.isAdmin());
 		model.addAttribute("user-form", form);
+		model.addAttribute("days", days);
+		model.addAttribute("months", months);
+		model.addAttribute("years", years);
+
 		return "client/details";
 	}
 
@@ -69,11 +98,22 @@ public class ClientController {
 		user.setPassword(form.getPassword());
 		user.setAddress(form.getAddress());
 		user.setGender(Enum.valueOf(Gender.class, form.getGender()));
+
+		// Réupération et transformtion de la date de naissance au format sql
+		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
+		System.out.println("date = " + date);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+//		Date utilDate = new Date();
+//		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+//		user.setCreationDate(sqlDate);
+
 		try {
-			user.setDateOfBirth(new SimpleDateFormat("dd/MM/yyyy").parse(form.getDateOfBirth()));
-			//sauvegarde des modifs en Bdd
+			user.setDateOfBirth(sdf.parse(date));
+			// sauvegarde des modifs en Bdd
 			userDao.update(user);
-			
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 			model.addAttribute("errors", result);
