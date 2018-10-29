@@ -1,15 +1,19 @@
 package fr.dawan.cultureEvents;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,16 +22,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fr.dawan.cultureEvents.beans.Event;
 import fr.dawan.cultureEvents.beans.User;
 import fr.dawan.cultureEvents.beans.User.Gender;
 import fr.dawan.cultureEvents.dao.UserDao;
 import fr.dawan.cultureEvents.formbeans.EditUserForm;
+import fr.dawan.cultureEvents.tools.JsonTools;
 
 @Controller
 public class ClientController {
 
 	@Autowired
 	private UserDao userDao;
+	private LoginInterceptor li = new LoginInterceptor();
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -50,7 +57,7 @@ public class ClientController {
 		User user = userDao.findById(id);
 		String dateBirthStr = new SimpleDateFormat("dd/MM/yyyy").format(user.getDateOfBirth());
 
-		// Récupération du jour, mois et année pour le formulaire
+		// Rï¿½cupï¿½ration du jour, mois et annï¿½e pour le formulaire
 		String[] dateSplit = dateBirthStr.split("/");
 		int day = Integer.parseInt(dateSplit[0]);
 		int month = Integer.parseInt(dateSplit[1]);
@@ -99,10 +106,8 @@ public class ClientController {
 		user.setAddress(form.getAddress());
 		user.setGender(Enum.valueOf(Gender.class, form.getGender()));
 
-		// Réupération et transformtion de la date de naissance au format sql
+		// Rï¿½upï¿½ration et transformtion de la date de naissance au format sql
 		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
-		System.out.println("date = " + date);
-
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 //		Date utilDate = new Date();
@@ -121,6 +126,54 @@ public class ClientController {
 			return "client/details";
 		}
 		return "redirect:/client/account";
+	}
+
+	
+	@RequestMapping(value="client/ajouter-event-agenda", method=RequestMethod.GET)
+	public String ajouterAgenda(HttpServletRequest request, HttpServletResponse response, @RequestParam("eventId") int eventId, Model model) {
+		System.out.println("oui");
+		if(request.getSession().getAttribute("user_id")==null) {
+			try {
+				request.getRequestDispatcher("/authenticate").forward(request, response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		Long user_id = (Long) request.getSession().getAttribute("user_id");
+		
+		User u = userDao.findById(user_id);
+		List<Integer> l = new ArrayList<>();
+		System.out.println(u.getEventsId());
+		
+		for (int  i=0; i< u.getEventsId().size(); i++) {
+			l.add(u.getEventsId().get(i));
+		}
+		l.add((Integer)eventId);
+		u.setEventsId(l);
+
+		userDao.update(u);
+		model.addAttribute("eventsId", u.getEventsId());
+		
+//		return "client/agenda";
+		return null;
+	}
+	
+	@RequestMapping(value = "/accueil", method = RequestMethod.GET)
+	public String accueil(Locale locale, Model model) {
+		//logger.info("Welcome home! The client locale is {}.", locale);
+		
+		//Appel du WS et affichage des events
+		List<Event> events;
+		try {
+			events = JsonTools.importAllEventsFromJson();
+			model.addAttribute("events", events);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("msg","Erreur de connexion au Web Service de Lille MÃ©tropole ("+ e.getMessage() + ")");
+		}
+		
+		return "client/accueil";
 	}
 
 }
