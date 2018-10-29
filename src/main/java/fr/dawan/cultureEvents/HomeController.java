@@ -5,8 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +20,6 @@ import fr.dawan.cultureEvents.beans.Event;
 import fr.dawan.cultureEvents.tools.EmailTools;
 import fr.dawan.cultureEvents.tools.JsonTools;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class HomeController {
 	
