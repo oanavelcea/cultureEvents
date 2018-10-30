@@ -55,6 +55,11 @@
 	<form:label path="email">Email :</form:label>
 	<form:input path="email" />
 	<br />
+	<c:if test="${msg !=null }">
+		<div class="alert alert-block alert-danger">
+			<p>${msg }</p>
+		</div>
+	</c:if>
 
 	<form:label path="password">Mot de passe :</form:label>
 	<form:password path="password" />

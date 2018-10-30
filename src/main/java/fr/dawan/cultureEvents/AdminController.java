@@ -87,7 +87,7 @@ public class AdminController {
 		User user = userDao.findById(id);
 		String dateBirthStr = new SimpleDateFormat("dd/MM/yyyy").format(user.getDateOfBirth());
 
-		// Récupération du jour, mois et année pour le formulaire
+		// Rï¿½cupï¿½ration du jour, mois et annï¿½e pour le formulaire
 		String[] dateSplit = dateBirthStr.split("/");
 		int day = Integer.parseInt(dateSplit[0]);
 		int month = Integer.parseInt(dateSplit[1]);
@@ -142,7 +142,7 @@ public class AdminController {
 		user.setAddress(form.getAddress());
 		user.setGender(Enum.valueOf(Gender.class, form.getGender()));
 
-		// Réupération et transformtion de la date de naissance au format sql
+		// Rï¿½upï¿½ration et transformtion de la date de naissance au format sql
 		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -151,6 +151,7 @@ public class AdminController {
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		user.setCreationDate(sqlDate);
 
+		String msg = null;
 		try {
 			user.setDateOfBirth(sdf.parse(date));
 			// sauvegarde des modifs en Bdd
@@ -158,6 +159,8 @@ public class AdminController {
 
 		} catch (ParseException e) {
 			e.printStackTrace();
+			msg="Cette adresse mail est dÃ©jÃ  utilisÃ©e";
+			model.put("msg", msg);
 			model.put("errors", result);
 			model.put("user-form", form);
 			return new ModelAndView("admin/edituser", model);
