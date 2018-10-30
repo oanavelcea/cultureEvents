@@ -10,6 +10,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
@@ -211,7 +212,8 @@ public class JsonTools {
 				}
 			}
 
-			evtList.add(evt); //add des objets event dans la liste  
+			evtList.add(evt); //add des objets event dans la liste
+//			request.getSession().setAttribute("evtList", evtList);
 		}
 
 		return evtList;

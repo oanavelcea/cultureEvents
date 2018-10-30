@@ -62,8 +62,9 @@ public class UserDao {
 	@Transactional(readOnly=true)
 	public User findByEmail(String email){
 		List<User> users = (List<User>) hibernateTemplate.find("FROM User u WHERE u.email= ?", email);
-		if(users!=null && users.size()>0)
+		if(users!=null && users.size()>0) {
 			return users.get(0);
+		}
 		
 		return null;
 	}

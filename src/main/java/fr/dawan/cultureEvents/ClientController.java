@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +33,6 @@ public class ClientController {
 
 	@Autowired
 	private UserDao userDao;
-	private LoginInterceptor li = new LoginInterceptor();
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -110,10 +108,7 @@ public class ClientController {
 		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-//		Date utilDate = new Date();
-//		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-//		user.setCreationDate(sqlDate);
-
+		String msg = null;
 		try {
 			user.setDateOfBirth(sdf.parse(date));
 			// sauvegarde des modifs en Bdd
@@ -121,6 +116,8 @@ public class ClientController {
 
 		} catch (ParseException e) {
 			e.printStackTrace();
+			msg="Cette adresse mail est déjà utilisée";
+			model.addAttribute("msg", msg);
 			model.addAttribute("errors", result);
 			model.addAttribute("user-form", form);
 			return "client/details";
@@ -128,11 +125,11 @@ public class ClientController {
 		return "redirect:/client/account";
 	}
 
-	
-	@RequestMapping(value="client/ajouter-event-agenda", method=RequestMethod.GET)
-	public String ajouterAgenda(HttpServletRequest request, HttpServletResponse response, @RequestParam("eventId") int eventId, Model model) {
-		System.out.println("oui");
-		if(request.getSession().getAttribute("user_id")==null) {
+	@RequestMapping(value = "client/ajouter-event-agenda", method = RequestMethod.GET)
+	public String ajouterAgenda(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("eventId") int eventId, Model model) {
+
+		if (request.getSession().getAttribute("user_id") == null) {
 			try {
 				request.getRequestDispatcher("/authenticate").forward(request, response);
 			} catch (ServletException | IOException e) {
@@ -141,38 +138,39 @@ public class ClientController {
 			}
 		}
 		Long user_id = (Long) request.getSession().getAttribute("user_id");
-		
+
 		User u = userDao.findById(user_id);
 		List<Integer> l = new ArrayList<>();
-		System.out.println(u.getEventsId());
-		
-		for (int  i=0; i< u.getEventsId().size(); i++) {
+
+		for (int i = 0; i < u.getEventsId().size(); i++) {
 			l.add(u.getEventsId().get(i));
 		}
-		l.add((Integer)eventId);
+		if (!u.getEventsId().contains(eventId)) {
+			l.add((Integer) eventId);
+		}
 		u.setEventsId(l);
 
 		userDao.update(u);
 		model.addAttribute("eventsId", u.getEventsId());
 		
-//		return "client/agenda";
-		return null;
+		return "client/agenda";
+
 	}
-	
+
 	@RequestMapping(value = "/accueil", method = RequestMethod.GET)
 	public String accueil(Locale locale, Model model) {
-		//logger.info("Welcome home! The client locale is {}.", locale);
-		
-		//Appel du WS et affichage des events
+		// logger.info("Welcome home! The client locale is {}.", locale);
+
+		// Appel du WS et affichage des events
 		List<Event> events;
 		try {
 			events = JsonTools.importAllEventsFromJson();
 			model.addAttribute("events", events);
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("msg","Erreur de connexion au Web Service de Lille Métropole ("+ e.getMessage() + ")");
+			model.addAttribute("msg", "Erreur de connexion au Web Service de Lille Métropole (" + e.getMessage() + ")");
 		}
-		
+
 		return "client/accueil";
 	}
 

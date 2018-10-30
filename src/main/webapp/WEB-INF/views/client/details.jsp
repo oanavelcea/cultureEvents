@@ -24,7 +24,7 @@
 
 	<form:form method="post" action="client/sauvegarde-coordonnees"
 		modelAttribute="user-form">
-		
+
 		<form:label path="gender" class="lbel-control">Votre civilité :</form:label>
 		<form:select path="gender" class="custom-select col-sm-1">
 			<form:option value="M">M</form:option>
@@ -57,13 +57,18 @@
 		</fieldset>
 		<br />
 
-<%-- 		<form:label path="dateOfBirth">Votre année de naissance :</form:label> --%>
-<%-- 		<form:input path="dateOfBirth" /> --%>
-<!-- 		<br /> -->
+		<%-- 		<form:label path="dateOfBirth">Votre année de naissance :</form:label> --%>
+		<%-- 		<form:input path="dateOfBirth" /> --%>
+		<!-- 		<br /> -->
 
 		<form:label path="email">Email :</form:label>
 		<form:input path="email" />
 		<br />
+		<c:if test="${msg !=null }">
+			<div class="alert alert-block alert-danger">
+				<p>${msg }</p>
+			</div>
+		</c:if>
 
 		<form:label path="password">Mot de passe :</form:label>
 		<form:password path="password" />
