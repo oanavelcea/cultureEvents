@@ -10,7 +10,6 @@
 <title>Coordonnées</title>
 </head>
 <body>
-	<h1>Mes coordonnées</h1>
 
 	<div class="alert alert-danger">
 		<spring:hasBindErrors name="login-form">
@@ -22,59 +21,81 @@
 		</spring:hasBindErrors>
 	</div>
 
-	<form:form method="post" action="client/sauvegarde-coordonnees"
-		modelAttribute="user-form">
+	<div class="container">
+		<div class="row main ">
+			<h1 class="col-lg-9 col-lg-offset-1">Modifier mes informations</h1>
 
-		<form:label path="gender" class="lbel-control">Votre civilité :</form:label>
-		<form:select path="gender" class="custom-select col-sm-1">
-			<form:option value="M">M</form:option>
-			<form:option value="MME">MME</form:option>
-		</form:select>
-		<br />
-		<form:label path="name">Votre nom :</form:label>
-		<form:input path="name" />
-		<br />
+			<div class="row col-lg-9 form-coordonnees">
+				<form:form method="post" action="client/sauvegarde-coordonnees"
+					modelAttribute="user-form" class="col-lg-10">
 
-		<form:label path="address">Votre adresse :</form:label>
-		<form:input path="address" />
-		<br />
+					<p>Mes coordonnées</p>
 
-		<fieldset>
-			<legend>Date de naissance</legend>
+					<div class="form-control form-element">
 
-			<form:label path="day" class="mr-sm-2" for="inlineFormCustomSelect"> Jour : </form:label>
-			<form:select path="day" items="${days }"
-				class="custom-select col-sm-1" id="inlineFormCustomSelect" />
+						<form:label path="gender" class="lbel-control">Votre civilité :</form:label>
+						<form:select path="gender" class="custom-select col-sm-1">
+							<form:option value="M">M</form:option>
+							<form:option value="MME">MME</form:option>
+						</form:select>
+					</div>
 
-			<form:label path="month" class="mr-sm-2" for="inlineFormCustomSelect"> Mois : </form:label>
-			<form:select path="month" items="${months }"
-				class="custom-select col-sm-1" id="inlineFormCustomSelect" />
+					<div class="form-control form-element">
+						<form:label path="name">Votre nom :</form:label>
+						<form:input path="name" class="form-control" />
+					</div>
 
-			<form:label path="year" class="mr-sm-2" for="inlineFormCustomSelect"> Année : </form:label>
-			<form:select path="year" items="${years }"
-				class="custom-select col-sm-1" id="inlineFormCustomSelect" />
+					<div class="form-control form-element">
+						<form:label path="address">Votre adresse :</form:label>
+						<form:input path="address" class="form-control" />
+					</div>
 
-		</fieldset>
-		<br />
+					<fieldset>
+						<legend>Date de naissance</legend>
 
-		<%-- 		<form:label path="dateOfBirth">Votre année de naissance :</form:label> --%>
-		<%-- 		<form:input path="dateOfBirth" /> --%>
-		<!-- 		<br /> -->
+						<form:label path="day" class="mr-sm-2"
+							for="inlineFormCustomSelect"> Jour : </form:label>
+						<form:select path="day" items="${days }"
+							class="custom-select col-sm-1" id="inlineFormCustomSelect" />
 
-		<form:label path="email">Email :</form:label>
-		<form:input path="email" />
-		<br />
-		<c:if test="${msg !=null }">
-			<div class="alert alert-block alert-danger">
-				<p>${msg }</p>
+						<form:label path="month" class="mr-sm-2"
+							for="inlineFormCustomSelect"> Mois : </form:label>
+						<form:select path="month" items="${months }"
+							class="custom-select col-sm-1" id="inlineFormCustomSelect" />
+
+						<form:label path="year" class="mr-sm-2"
+							for="inlineFormCustomSelect"> Année : </form:label>
+						<form:select path="year" items="${years }"
+							class="custom-select col-sm-1" id="inlineFormCustomSelect" />
+
+					</fieldset>
+
+					<div class="form-control form-element">
+						<form:label path="email">Email :</form:label>
+						<form:input path="email" class="form-control" />
+					</div>
+
+					<c:if test="${msg !=null }">
+						<div class="alert alert-block alert-danger">
+							<p>${msg }</p>
+						</div>
+					</c:if>
+
+					<div class="form-control form-element">
+						<form:label path="password">Mot de passe :</form:label>
+						<form:password path="password" class="form-control" />
+						 <i class="icon icon-lock"></i>
+					</div>
+
+
+					<div class="form-submit">
+						<input type="submit" value="Enregistrer" class="btn btn-secondary" />
+					</div>
+
+				</form:form>
 			</div>
-		</c:if>
 
-		<form:label path="password">Mot de passe :</form:label>
-		<form:password path="password" />
-		<br />
-
-		<input type="submit" value="Modifier" />
-	</form:form>
+		</div>
+	</div>
 </body>
 </html>

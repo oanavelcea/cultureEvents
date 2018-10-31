@@ -4,32 +4,49 @@
 <%@ page session="false" isELIgnored="false"
 	contentType="text/html; charset=UTF-8"%>
 
-<h1>Authentication</h1>
 
-<div class="alert alert-danger">
-	<spring:hasBindErrors name="login-form">
-		<c:forEach var="err" items="${errors.allErrors}">
-			<c:out value="${err.field}" /> :
+	<div class="alert alert-danger">
+		<spring:hasBindErrors name="login-form">
+			<c:forEach var="err" items="${errors.allErrors}">
+				<c:out value="${err.field}" /> :
 			<c:out value="${err.defaultMessage}" />
-			<br />
-		</c:forEach>
-	</spring:hasBindErrors>
-</div>
+				<br />
+			</c:forEach>
+		</spring:hasBindErrors>
+	</div>
 
-<form:form method="post" action="check-login"
-	modelAttribute="login-form">
-	<form:label path="username">Email :</form:label>
-	<form:input path="username" />
 
-	<br />
+	<div class="container">
+		<div class="row main ">
+			<h1 class="col-lg-9 col-lg-offset-1">Authentification</h1>
 
-	<form:label path="password">Mot de passe :</form:label>
-	<form:password path="password" />
-	<br />
-	<input type="submit" value="Connect" />
-</form:form>
+			<div class="row col-lg-9 form-coordonnees">
+				<form:form method="post" action="check-login"
+					modelAttribute="login-form">
 
-<div>${msg}</div>
+					<p>Identifiez-vous</p>
+
+
+					<div class="form-control form-element">
+						<form:label path="username">Email :</form:label>
+						<form:input path="username" class="form-control" />
+					</div>
+
+					<div class="form-control form-element">
+						<form:label path="password">Mot de passe :</form:label>
+						<form:password path="password" class="form-control" />
+					</div>
+
+					<div class="form-submit">
+						<input type="submit" value="Se connecter"
+							class="btn btn-secondary" />
+					</div>
+				</form:form>
+
+				<div>${msg}</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.QueryParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +29,27 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		//logger.info("Welcome home! The client locale is {}.", locale);
 		
 		//Appel du WS et affichage des events
 		List<Event> events;
 		try {
-			events = JsonTools.importAllEventsFromJson();
+			events = JsonTools.importAllEventsFromJson(null);
+			model.addAttribute("events", events);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("msg","Erreur de connexion au Web Service de Lille Métropole ("+ e.getMessage() + ")");
+		}
+	
+		
+		return "home";
+	}
+	
+	@RequestMapping(value = "/evenements", method = RequestMethod.GET)
+	public String home(@QueryParam("tag") String tag, Model model) {
+		//Appel du WS et affichage des events
+		List<Event> events;
+		try {
+			events = JsonTools.importAllEventsFromJson(tag);
 			model.addAttribute("events", events);
 		} catch (Exception e) {
 			e.printStackTrace();

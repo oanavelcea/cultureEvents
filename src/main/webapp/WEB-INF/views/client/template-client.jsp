@@ -23,6 +23,8 @@
 <link href='resources/css/fullcalendar.print.min.css' rel='stylesheet'
 	media='print' />
 
+<link href='resources/css/style.css' rel='stylesheet' />
+
 <style>
 body {
 	padding-top: 54px;
@@ -30,6 +32,9 @@ body {
 	padding: 0;
 	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
 	font-size: 14px;
+}
+.navbar {
+	height: 70px;
 }
 
 #calendar {
@@ -68,11 +73,14 @@ body {
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item active"><a class="nav-link"
-						href="accueil">Accueil <span class="sr-only">(current)</span></a>
+					<li class="nav-item"><a class="nav-link" href="accueil">Accueil</a>
 					</li>
 					<li class="nav-item active"><a class="nav-link"
-						href="client/account">Dashboard <span class="sr-only">(current)</span></a>
+						href="client/account">Dashboard<span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="exposition">Expositions</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="concert">Concerts</a>
 					</li>
 					<li><a class="nav-link"
 						href="client/coordonnees-utilisateur?id=${sessionScope.user_id}">Mes

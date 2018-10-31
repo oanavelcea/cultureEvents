@@ -19,6 +19,9 @@
 <link href="resources/css/bootstrap.min.css" rel="stylesheet"
 	id="bootstrap-css" />
 
+<link href='resources/css/style.css' rel='stylesheet' />
+<link href='resources/fronts/glyphicons-halflings-regular.eot' rel='stylesheet' />
+
 <style>
 body {
 	padding-top: 54px;
@@ -28,6 +31,10 @@ body {
 	body {
 		padding-top: 56px;
 	}
+}
+
+.navbar {
+	height: 70px;
 }
 
 .portfolio-item {
@@ -57,7 +64,19 @@ body {
 					<li class="nav-item active"><a class="nav-link" href="#">Accueil
 							<span class="sr-only">(current)</span>
 					</a></li>
-					<li class="nav-item"><a class="nav-link" href="authenticate">Login</a>
+					<li class="nav-item"><a class="nav-link"
+						href="evenements?tag=exposition">Expositions</a></li>
+						
+					<li class="nav-item"><a class="nav-link"
+						href="evenements?tag=concert">Concerts</a></li>
+						
+					<li class="nav-item"><a class="nav-link"
+						href="evenements?tag=SPECTACLE">Spectacles</a></li>
+						
+					<li class="nav-item"><a class="nav-link"
+						href="evenements?tag=sport">Sport</a></li>
+						
+					<li class="nav-item"><a class="nav-link" href="authenticate"><i class="glyphicon glyphicon-envelope"></i>Login</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="signup">S'inscrire</a>
 					</li>

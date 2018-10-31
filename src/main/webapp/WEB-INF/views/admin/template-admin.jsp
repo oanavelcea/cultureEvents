@@ -19,6 +19,8 @@
 <link href="resources/css/bootstrap.min.css" rel="stylesheet"
 	id="bootstrap-css" />
 
+<link href='resources/css/style.css' rel='stylesheet' />
+
 <style>
 body {
 	padding-top: 54px;
@@ -57,13 +59,15 @@ body {
 					<li class="nav-item active"><a class="nav-link"
 						href="admin/dashboard">Accueil <span class="sr-only">(current)</span></a>
 					</li>
-
 					<li class="nav-item"><a class="nav-link"
 						href="admin/liste-utilisateurs?page=1&max=15">Gestion des
 							utilisateurs</a></li>
+					<li class="nav-item"><a class="nav-link" href="exposition">Expositions</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="concert">Concerts</a>
+					</li>
 					<li class="nav-item"><a class="nav-link"
 						href="admin/disconnect">Déconnexion</a></li>
-
 				</ul>
 			</div>
 		</div>

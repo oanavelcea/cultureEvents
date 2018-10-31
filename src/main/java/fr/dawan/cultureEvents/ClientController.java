@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +40,34 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = "/client/account", method = RequestMethod.GET)
-	public String showAccount() {
+	public String showAccount(HttpServletRequest request, Model model) {
+
+		Long user_id = (Long) request.getSession().getAttribute("user_id");
+		User u = userDao.findById(user_id);
+		StringBuilder eventsJSON = new StringBuilder();
+		List<Integer> eventsIds = u.getEventsId();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for (int j = 0; j < eventsIds.size(); j++) {
+
+			try {
+				Event evt = JsonTools.findEventByIdFromWS(eventsIds.get(j));
+
+				eventsJSON.append("{title : \"" + evt.getTitle() + "\",").append("url : \"" + evt.getLink() + "\",")
+						.append("start : \"" + sdf.format(evt.getDateStart()) + "\",")
+						.append("end : \"" + sdf.format(evt.getDateEnd()) + "\"").append("}");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (j < eventsIds.size() - 1)
+				eventsJSON.append(",");
+		}
+		// System.out.println("EVENTS JSON = " + eventsJSON.toString());
+
+		model.addAttribute("eventsJSON", eventsJSON.toString());
+		/*
+		 * { title : 'Click for Google', url : 'http://google.com/', start :
+		 * '2018-03-28' }
+		 */
 		return "client/account";
 	}
 
@@ -106,9 +134,14 @@ public class ClientController {
 
 		// R�up�ration et transformtion de la date de naissance au format sql
 		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
+		System.out.println("date = " + date);
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		String msg = null;
+//		Date utilDate = new Date();
+//		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+//		user.setCreationDate(sqlDate);
+
 		try {
 			user.setDateOfBirth(sdf.parse(date));
 			// sauvegarde des modifs en Bdd
@@ -116,8 +149,6 @@ public class ClientController {
 
 		} catch (ParseException e) {
 			e.printStackTrace();
-			msg="Cette adresse mail est déjà utilisée";
-			model.addAttribute("msg", msg);
 			model.addAttribute("errors", result);
 			model.addAttribute("user-form", form);
 			return "client/details";
@@ -125,46 +156,42 @@ public class ClientController {
 		return "redirect:/client/account";
 	}
 
+//	@RequestMapping(value = "/client/ajouter-event-agenda", method = RequestMethod.GET)
+//	public String ajouterAgenda(HttpServletRequest request) {
+//		if (request.getSession().getAttribute("user_id") == null) {
+//			return "redirect:/login";
+//		}
+//		
+//		return "client/agenda";
+//	}
+
 	@RequestMapping(value = "client/ajouter-event-agenda", method = RequestMethod.GET)
 	public String ajouterAgenda(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("eventId") int eventId, Model model) {
-
 		if (request.getSession().getAttribute("user_id") == null) {
-			try {
-				request.getRequestDispatcher("/authenticate").forward(request, response);
-			} catch (ServletException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			return "redirect:/authenticate";
 		}
 		Long user_id = (Long) request.getSession().getAttribute("user_id");
 
 		User u = userDao.findById(user_id);
-		List<Integer> l = new ArrayList<>();
-
-		for (int i = 0; i < u.getEventsId().size(); i++) {
-			l.add(u.getEventsId().get(i));
+		int pos = u.getEventsId().indexOf(eventId);
+		if (pos == -1) {
+			u.getEventsId().add(eventId);
 		}
-		if (!u.getEventsId().contains(eventId)) {
-			l.add((Integer) eventId);
-		}
-		u.setEventsId(l);
 
 		userDao.update(u);
 		model.addAttribute("eventsId", u.getEventsId());
-		
-		return "client/agenda";
 
+		return "redirect:/client/account";
 	}
 
 	@RequestMapping(value = "/accueil", method = RequestMethod.GET)
-	public String accueil(Locale locale, Model model) {
-		// logger.info("Welcome home! The client locale is {}.", locale);
+	public String accueil(Model model) {
 
 		// Appel du WS et affichage des events
 		List<Event> events;
 		try {
-			events = JsonTools.importAllEventsFromJson();
+			events = JsonTools.importAllEventsFromJson(null);
 			model.addAttribute("events", events);
 		} catch (Exception e) {
 			e.printStackTrace();

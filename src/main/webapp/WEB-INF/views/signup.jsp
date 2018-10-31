@@ -9,34 +9,31 @@
 <title>Inscription</title>
 
 <!-- Google Fonts -->
-<link href='https://fonts.googleapis.com/css?family=Passion+One'
-	rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Oxygen'
-	rel='stylesheet' type='text/css'>
+<!-- <link href='https://fonts.googleapis.com/css?family=Passion+One' -->
+<!-- 	rel='stylesheet' type='text/css'> -->
+<!-- <link href='https://fonts.googleapis.com/css?family=Oxygen' -->
+<!-- 	rel='stylesheet' type='text/css'> -->
 
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<!-- <script -->
+<!-- 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> -->
+<!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
 
 </head>
 <body>
 
 
-	<div class="container" style="padding: 70px; margin-left: 200px">
+	<div class="container">
 		<div class="row main ">
 			<h1 class="col-lg-9 col-lg-offset-1">Créer un compte</h1>
 
-			<div class="row col-lg-9"
-				style="background-color: #DBDEDD; padding: 50px; margin-top: 50px">
+			<div class="row col-lg-9 form-coordonnees">
 				<form:form method="post" action="validate-signup"
 					modelAttribute="signup-form" class="col-lg-10">
 
 					<p>Vos coordonnées</p>
 
-					<div class="form-control" style="margin: 10px">
+					<div class="form-control form-element">
 						<form:label path="gender">Civilité :</form:label>
 						<form:select path="gender"
 							class="custom-select col-sm-3 form-control">
@@ -46,17 +43,17 @@
 					</div>
 
 
-					<div class="form-control" style="margin: 10px">
+					<div class="form-control form-element">
 						<form:label path="name">Votre nom :</form:label>
 						<form:input path="name" class="form-control" />
 					</div>
 
-					<div class="form-control" style="margin: 10px">
+					<div class="form-control form-element">
 						<form:label path="address">Votre adresse :</form:label>
 						<form:input path="address" class="form-control" />
 					</div>
 
-					<div class="form-control" style="margin: 10px">
+					<div class="form-control form-element">
 						<fieldset>
 							<legend>Date de naissance</legend>
 
@@ -78,7 +75,7 @@
 						</fieldset>
 					</div>
 
-					<div class="form-control" style="margin: 10px">
+					<div class="form-control form-element">
 						<form:label path="email">Email :</form:label>
 						<form:input path="email" class="form-control" />
 					</div>
@@ -88,12 +85,12 @@
 						</div>
 					</c:if>
 
-					<div class="form-control" style="margin: 10px">
+					<div class="form-control form-element">
 						<form:label path="password">Mot de passe :</form:label>
 						<form:password path="password" class="form-control" />
 					</div>
 
-					<div style="margin: 30px">
+					<div class="form-submit">
 						<input type="submit" value="S'inscrire" class="btn btn-secondary" />
 					</div>
 
