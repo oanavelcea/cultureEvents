@@ -85,8 +85,12 @@ body {
 					<li><a class="nav-link"
 						href="client/coordonnees-utilisateur?id=${sessionScope.user_id}">Mes
 							coordonnées</a></li>
+							
 					<li class="nav-item"><a class="nav-link"
-						href="client/disconnect">Déconnexion</a></li>
+						href="client/disconnect">Déconnexion</a></li>		
+							
+					<li class="nav-item"><a class="nav-link"
+						href="client/contact">Contact</a></li>
 
 				</ul>
 			</div>

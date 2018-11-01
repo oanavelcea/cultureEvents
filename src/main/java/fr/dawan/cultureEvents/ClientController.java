@@ -1,14 +1,12 @@
 package fr.dawan.cultureEvents;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -21,12 +19,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import fr.dawan.cultureEvents.beans.Event;
 import fr.dawan.cultureEvents.beans.User;
 import fr.dawan.cultureEvents.beans.User.Gender;
 import fr.dawan.cultureEvents.dao.UserDao;
+import fr.dawan.cultureEvents.formbeans.ContactForm;
 import fr.dawan.cultureEvents.formbeans.EditUserForm;
+import fr.dawan.cultureEvents.tools.EmailTools;
 import fr.dawan.cultureEvents.tools.JsonTools;
 
 @Controller
@@ -134,7 +135,6 @@ public class ClientController {
 
 		// R�up�ration et transformtion de la date de naissance au format sql
 		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
-		System.out.println("date = " + date);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -200,5 +200,43 @@ public class ClientController {
 
 		return "client/accueil";
 	}
+	
+	@RequestMapping("/client/contact") // @requestMapping(value="/autenticate", method=RequestMethod.GET)
+	public ModelAndView showContact() {
+		Map<String, Object> model = new HashMap<>();
+		ContactForm cf = new ContactForm("", "", "");
+		model.put("contact-form", cf);
+		return new ModelAndView("client/contact", model);
+	}
+	
+	@RequestMapping(value = "/client/envoyer-message", method = RequestMethod.POST)
+	public String sendMessage(HttpServletRequest request, @Valid @ModelAttribute("contact-form") ContactForm form,
+			BindingResult result, Model model) {
+		System.out.println("dedans");
+		
+		if (result.hasErrors()) {
+			model.addAttribute("errors", result);
+			model.addAttribute("contact-form", form);
+			return "client/contact";
+		}
+		
+		String from = form.getEmail();
+		String subject = form.getSubject();
+		String message = form.getMessage();
+		
+		
+		
+		try {
+			EmailTools.receiveEmail(from, subject, message);
+		} catch (Exception e) {
+			System.out.println("from catch = " + from);
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	
 
 }

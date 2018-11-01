@@ -76,6 +76,8 @@ body {
 					<li class="nav-item"><a class="nav-link"
 						href="evenements?tag=sport">Sport</a></li>
 						
+						
+						
 					<li class="nav-item"><a class="nav-link" href="authenticate"><i class="glyphicon glyphicon-envelope"></i>Login</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="signup">S'inscrire</a>
