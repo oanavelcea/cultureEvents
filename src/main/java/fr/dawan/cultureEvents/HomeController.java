@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.QueryParam;
 
+import org.apache.catalina.connector.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -25,6 +26,7 @@ import fr.dawan.cultureEvents.tools.JsonTools;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
 	
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -44,8 +46,8 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/evenements", method = RequestMethod.GET)
-	public String home(@QueryParam("tag") String tag, Model model) {
+	@RequestMapping(value = {"/evenements", "/client/evenements", "/admin/evenements"}, method = RequestMethod.GET)
+	public String home(@QueryParam("tag") String tag, Model model, HttpServletRequest request) {
 		//Appel du WS et affichage des events
 		List<Event> events;
 		try {
@@ -55,7 +57,14 @@ public class HomeController {
 			e.printStackTrace();
 			model.addAttribute("msg","Erreur de connexion au Web Service de Lille Métropole ("+ e.getMessage() + ")");
 		}
-	
+		
+		
+	if(request.getSession().getAttribute("user_id")!=null) {
+		return "client/accueil";
+	}
+	if( request.getSession().getAttribute("user_admin")!=null) {
+		return "admin/accueil";
+	}
 		
 		return "home";
 	}

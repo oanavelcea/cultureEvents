@@ -19,6 +19,7 @@ import fr.dawan.cultureEvents.dao.UserDao;
 import fr.dawan.cultureEvents.formbeans.LoginForm;
 
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
@@ -30,10 +31,10 @@ public class LoginController {
 		this.userDao = userDao;
 	}
 
-	@RequestMapping("/authenticate") // @requestMapping(value="/autenticate", method=RequestMethod.GET)
-	public ModelAndView showLogin() {
+	@RequestMapping("/authenticate")
+	public ModelAndView showLogin(@RequestParam("contact") boolean contact) {
 		Map<String, Object> model = new HashMap<>();
-		LoginForm lf = new LoginForm("", "");
+		LoginForm lf = new LoginForm("", "", contact);
 		model.put("login-form", lf);
 		return new ModelAndView("login", model);
 	}
@@ -52,8 +53,16 @@ public class LoginController {
 		if (u != null && u.getPassword().equals(form.getPassword())) {
 			request.getSession().setAttribute("user_id", u.getId());
 			request.getSession().setAttribute("user_name", u.getName());
+			request.getSession().setAttribute("user_email", u.getEmail());
+			request.getSession().setAttribute("user_admin", u.isAdmin());
+			
 			if (u.isAdmin())
 				return "redirect:/admin/dashboard";
+			
+			else if(form.isContact()) {
+				return "redirect:/client/contact";
+			}
+			
 			else
 				return "redirect:/client/account";
 		} else {

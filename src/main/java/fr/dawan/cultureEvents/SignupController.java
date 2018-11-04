@@ -62,9 +62,35 @@ public class SignupController {
 			BindingResult result) {
 		Map<String, Object> model = new HashMap<>();
 
+		List days = new ArrayList();
+		for (int i = 1; i <= 31; i++) {
+			days.add(i);
+		}
+		List months = new ArrayList<>();
+		for (int i = 1; i <= 12; i++) {
+			months.add(i);
+		}
+
+		List years = new ArrayList<>();
+		for (int i = 1900; i <= 2018; i++) {
+			years.add(i);
+		}
+
 		if (result.hasErrors()) {
+
+			model.put("days", days);
+			model.put("months", months);
+			model.put("years", years);
+
+			if (result.getFieldError().getField().toString().equals("email")) {
+				model.put("msg", "Errreur : le format de l'adresse email n'est pas correct !");
+			} else {
+				model.put("msg", "Errreur : le mot de passe n'est pas correct !");
+			}
+
 			model.put("errors", result);
 			model.put("signup-form", form);
+			model.put("msg", "Assurez-vous que les champs soient correctement remplis");
 			return new ModelAndView("signup", model);
 		}
 
@@ -83,24 +109,27 @@ public class SignupController {
 		Date utilDate = new Date();
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		u.setCreationDate(sqlDate);
-		
+
 		try {
 			u.setDateOfBirth(sdf.parse(date));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		//on traite l'erreur retournée si l'adresse mail existe déjà en base de données
-		String msg = null;
+
+		// on traite l'erreur retournée si l'adresse mail existe déjà en base de données
+		String msgMail = null;
 		try {
 			userDao.save(u);
 		} catch (Exception e) {
-			msg="Cette adresse mail est déjà utilisée";
-			model.put("msg", msg);
+			msgMail = "Cette adresse mail est déjà utilisée";
+			model.put("days", days);
+			model.put("months", months);
+			model.put("years", years);
+			model.put("msgMail", msgMail);
 			return new ModelAndView("signup", model);
 		}
 
-		return new ModelAndView("client/account", model);
+		return new ModelAndView("home", model);
 	}
 
 }

@@ -12,7 +12,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		System.out.println("handler = " + handler.getClass().getName());
 		
 		//récupérer l'urlDemandee
 		String requestedURI = request.getRequestURI();
@@ -22,7 +21,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			HttpSession session = request.getSession();
 			//tester la présence de isConnected
 			if(session.getAttribute("user_id")==null) {
-				System.out.println("interceptor if");
 				request.getRequestDispatcher("authenticate").forward(request, response);
 			}
 		

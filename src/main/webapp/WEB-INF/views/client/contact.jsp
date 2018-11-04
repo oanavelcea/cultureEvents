@@ -11,14 +11,34 @@
 	src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+<!------ Include the above in your HEAD tag -------- -->
 
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
 	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
 	crossorigin="anonymous">
+
+<link href='resources/css/style.css' rel='stylesheet' />
+
+
+
 <div class="container">
-	<h2 class="text-center">Formulaire de contact</h2>
+
+	<c:if test="${msg !=null }">
+		<div class="alert alert-block alert-danger messageMail">
+			<p>${msg }</p>
+		</div>
+	</c:if>
+
+
+	<c:if test="${messageErreur !=null }">
+		<div class="alert alert-danger messageMail" role="alert">
+			<c:out value="${messageErreur }"></c:out>
+		</div>
+
+	</c:if>
+
+	<h2 class="text-center titre-page">Formulaire de contact</h2>
 	<div class="row justify-content-center">
 		<div class="col-12 col-md-8 col-lg-6 pb-5">
 
@@ -47,8 +67,7 @@
 										<i class="fa fa-envelope text-info"></i>
 									</div>
 								</div>
-								<form:input  class="form-control" id="nombre"
-									path="email" placeholder="Entrez votre adresse mail" />
+								<form:input class="form-control" id="nombre" path="email" />
 							</div>
 						</div>
 
@@ -59,8 +78,8 @@
 										<i class="fa fa-question text-info"></i>
 									</div>
 								</div>
-								<form:input class="form-control" id="nombre"
-									path="subject" placeholder="Sujet" />
+								<form:input class="form-control" id="nombre" path="subject"
+									placeholder="Sujet" />
 							</div>
 						</div>
 
@@ -73,12 +92,12 @@
 									</div>
 								</div>
 								<form:textarea path="message" class="form-control"
-									placeholder="Entrez votre message"/>
+									placeholder="Entrez votre message" />
 							</div>
 						</div>
 
 						<div class="text-center">
-							<input type="submit" value="Enviar"
+							<input type="submit" value="Envoyer"
 								class="btn btn-info btn-block rounded-0 py-2">
 						</div>
 					</div>

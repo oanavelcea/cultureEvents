@@ -5,12 +5,12 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 	
-<a href="test-data">Insérer des données de test</a>
-<br />
+<!-- <a href="test-data">Insérer des données de test</a> -->
+<!-- <br /> -->
 	
 <h1 class="my-4">Evénements de la métropole de Lille </h1>
-<%-- <a href="client/ajouter-event-agenda?eventId=${evt.uid }">Ajouter à l'agenda</a>	 --%>
-<a href="client/ajouter-event-agenda?eventId=16111992">Ajouter à l'agenda</a>
+<a href="client/ajouter-event-agenda?eventId=${evt.uid }">Ajouter à l'agenda</a>	
+<!-- <a href="client/ajouter-event-agenda?eventId=16111992&contact=false">Ajouter à l'agenda</a> -->
 	
 	<div class="row">
 	<c:forEach var="evt" items="${events}" varStatus="st">

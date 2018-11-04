@@ -33,7 +33,6 @@ public class JsonTools {
 		
 
 		Response res = client.target(link).request().get();
-		System.out.println("res = " + res);
 
         //verification de la connexion - s'il y a des erreurs d'accès a la bdd - sans erreur:par défaut les codes 200+201
 		if (res.getStatus() != 200 && res.getStatus() != 201) {

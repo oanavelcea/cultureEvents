@@ -13,16 +13,30 @@ public class LoginForm {
 	@NotEmpty
 	@Size(min=4, max=50)
 	private String password;
+	
+	
+	private boolean contact;
 
 	
-	public LoginForm(String username, String password) {
+	public LoginForm(String username, String password, boolean contact) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.contact = contact;
 	}
 
 	public LoginForm() {
 		super();
+	}
+	
+	
+
+	public boolean isContact() {
+		return contact;
+	}
+
+	public void setContact(boolean contact) {
+		this.contact = contact;
 	}
 
 	public String getUsername() {

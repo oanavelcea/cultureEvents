@@ -11,25 +11,95 @@
 		url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular')
 		format('svg');
 }
-
-.container {
-	padding: 70px;
-	margin-left: 200px
+.titre-menu {
+	font-family: "Serif (serif red), Times New Roman", Times;
+	font-size: 30px;
 }
 
-.nav-top {
+.container {
+/* 	margin: auto; */
+}
+
+.messageMail {
+	font-size: 15px;
+	font-weight: bold;
+	width: 550px;
 	height: 50px;
-	background-color: #ffffff;
+/* 	margin: auto; */
+}
+
+.container {
+	padding: 10px;
+	margin-left: 150px
+}
+
+nav li {
+	font-size: 12px;
+	width: 150px;
+	text-align: center;
+}
+
+.coordonnees {
+	margin-left: 100px;
+}
+
+.dropdown {
+	text-align: left;
+	width: 100px;
+}
+
+/* .dropdown ul { */
+/* 	width: 40px;	 */
+/* } */
+
+.categories {
+	float: left;
+	width: 160px;
+	height: 30px;
+}
+
+.categories1 {
+	width: 150px;
+}
+
+nav a:hover {
+	background-color: #797C7C;
+}
+
+.nav-link:hover {
+	background-color: #797C7C;
+}
+
+.titre-page {
+	margin: 30px;
 }
 
 .form-coordonnees {
-	background-color: #DBDEDD;
-	padding: 50px;
+	background-color: #D0D5D4;
+	padding: 80px;
 	margin-top: 50px"
 }
 
 .form-element {
 	margin: 10px;
+	margin-top: 20px;
+	padding: 10px; width : 500px;
+	width: 500px; 
+	height : 80px;
+	background-color: #B9BCBB;
+}
+
+.form-element-date {
+	height: 100px;
+}
+
+form label {
+	font-size: 10px;
+	margin-right: 10px;
+}
+
+form select {
+	font-size: 13px;
 }
 
 .form-submit {
@@ -46,4 +116,13 @@
 		format('truetype'),
 		url('/resources/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular')
 		format('svg');
+}
+
+footer {
+	height: 70px;
+}
+
+
+.copyright {
+	margin-top: 20px;
 }

@@ -6,11 +6,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	content="width=device-width, initial-scale=1 shrink-to-fit=no ">
 <meta charset="utf-8" />
 
-<title>Lille Culture Events / Admin</title>
+<title>Lille Culture Events</title>
 
 <base
 	href="<%=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -19,17 +20,41 @@
 <link href="resources/css/bootstrap.min.css" rel="stylesheet"
 	id="bootstrap-css" />
 
+<link href='resources/css/fullcalendar.min.css' rel='stylesheet' />
+<link href='resources/css/fullcalendar.print.min.css' rel='stylesheet'
+	media='print' />
+
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href='resources/fronts/glyphicons-halflings-regular.eot'
+	rel='stylesheet' />
+
 <link href='resources/css/style.css' rel='stylesheet' />
 
 <style>
 body {
+	margin-top: -50px;
 	padding-top: 54px;
 }
+
+
 
 @media ( min-width : 992px) {
 	body {
 		padding-top: 56px;
 	}
+}
+
+.navbar {
+	height: 70px;
+	
+}
+
+.titre-menu {
+	font-family: "Serif (serif red), Times New Roman", Times;
+	font-size: 30px;
 }
 
 .portfolio-item {
@@ -42,13 +67,13 @@ body {
 </style>
 
 </head>
-
 <body>
 
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="#">Lille Culture Events / Admin</a>
+			<a class="navbar-brand titre-menu" href="admin/accueil">Lille
+				Culture Events/Admin</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -57,19 +82,61 @@ body {
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active"><a class="nav-link"
-						href="admin/dashboard">Accueil <span class="sr-only">(current)</span></a>
-					</li>
-					<li class="nav-item"><a class="nav-link"
-						href="admin/liste-utilisateurs?page=1&max=15">Gestion des
-							utilisateurs</a></li>
-					<li class="nav-item"><a class="nav-link" href="exposition">Expositions</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="concert">Concerts</a>
-					</li>
-					<li class="nav-item"><a class="nav-link"
-						href="admin/disconnect">Déconnexion</a></li>
+						href="admin/accueil"><span class="glyphicon glyphicon-home"></span>&nbsp;
+							Accueil <span class="sr-only">(current)</span> </a></li>
 				</ul>
 			</div>
+		</div>
+
+
+		<!-- Menu déroulaant pour les catégories -->
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle categories" type="button"
+				data-toggle="dropdown">
+				Catégories <span class="caret"></span>
+			</button>
+			<ul class=" dropdown-menu" id="navbarSupportedContent">
+
+				<li class="dropdown"><a class="nav-link"
+					href="admin/evenements?tag=exposition">Expositions</a></li>
+
+				<li class="dropdown"><a class="nav-link"
+					href="admin/evenements?tag=concert">Concerts</a></li>
+
+				<li class="dropdown" class="nav-item"><a class="nav-link"
+					href="admin/evenements?tag=SPECTACLE">Spectacles</a></li>
+
+				<li class="dropdown"><a class="nav-link"
+					href="admin/evenements?tag=sport">Sport</a></li>
+
+				<li class="dropdown"><a class="nav-link"
+					href="admin/evenements?tag=loisirs">Loisirs</a></li>
+
+				<li class="dropdown"><a class="nav-link"
+					href="admin/accueil">Tous</a></li>
+			</ul>
+		</div>
+		<!-- Fin menu déroulant -->
+		
+
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item coordonnees"><a class="nav-link"
+					href="admin/liste-utilisateurs?page=1&max=15">
+						<span class="glyphicon glyphicon-user"></span>
+						<span class="glyphicon glyphicon-user"></span>&nbsp Gestion
+						utilisateurs
+				</a></li>
+
+				<li class="nav-item"><a class="nav-link"
+					href="client/disconnect"><span
+						class="glyphicon glyphicon-log-out"></span>&nbsp Déconnexion</a></li>
+
+<!-- 				<li class="nav-item"><a class="nav-link" -->
+<!-- 					href="client/contact?contact=false"><span -->
+<!-- 						class="glyphicon glyphicon-envelope"></span>&nbsp Contact</a></li> -->
+
+			</ul>
 		</div>
 	</nav>
 
@@ -79,21 +146,28 @@ body {
 	</div>
 
 	<!-- Footer -->
-	<footer class="py-5 bg-dark">
-		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; 2018 :
-				Cindy, José, Ioana</p>
+	<footer class="bg-dark fixed-bottom">
+		<div>
+			<p class="text-center text-white copyright">Copyright &copy; 2018
+				: Cindy, José, Ioana</p>
 		</div>
 	</footer>
+
+
 
 	<!-- Bootstrap core JavaScript -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-		crossorigin="anonymous"></script>
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+		
+	</script>
+
+	<!-- Bootstrap core JavaScript -->
+	<script src='resources/js/moment.min.js'></script>
+	<script src='resources/js/fullcalendar.min.js'></script>
+	<script src='resources/js/locale-all.js'></script>
+	<!-- 		<script src="resources/js/bootstrap.min.js"></script> -->
 
 </body>
-
 </html>

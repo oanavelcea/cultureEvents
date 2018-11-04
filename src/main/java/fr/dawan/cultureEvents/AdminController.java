@@ -115,6 +115,7 @@ public class AdminController {
 		model.put("days", days);
 		model.put("months", months);
 		model.put("years", years);
+		model.put("user_name", user.getName());
 
 		return new ModelAndView("admin/edituser", model);
 	}
@@ -126,9 +127,34 @@ public class AdminController {
 			throws java.text.ParseException {
 		Map<String, Object> model = new HashMap<>();
 
+
 		if (result.hasErrors()) {
 			model.put("errors", result);
 			model.put("edit-user-form", form);
+			
+			List days = new ArrayList();
+			for (int i = 1; i <= 31; i++) {
+				days.add(i);
+			}
+			List months = new ArrayList<>();
+			for (int i = 1; i <= 12; i++) {
+				months.add(i);
+			}
+
+			List years = new ArrayList<>();
+			for (int i = 1900; i <= 2018; i++) {
+				years.add(i);
+			}
+			model.put("days", days);
+			model.put("months", months);
+			model.put("years", years);
+			
+			if(result.getFieldError().getField().toString().equals("email")) {
+				model.put("msg", "Errreur : le format de l'adresse email n'est pas correct !");
+			}
+			else {
+				model.put("msg", "Errreur : au moins un des champs n'a pas été correctement rempli !");
+			}
 			return new ModelAndView("admin/edituser", model);
 		}
 
@@ -136,7 +162,7 @@ public class AdminController {
 		// long id =
 		User user = userDao.findById(form.getId());
 		user.setName(form.getName());
-		user.setAdmin(false);
+		user.setAdmin(form.isAdmin());
 		user.setEmail(form.getEmail());
 		user.setPassword(form.getPassword());
 		user.setAddress(form.getAddress());

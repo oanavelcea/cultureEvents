@@ -44,6 +44,7 @@ public class UserDao {
 	
 	@Transactional
 	public void update(User p) {
+		System.out.println("admin update = " + p.isAdmin());
 		hibernateTemplate.saveOrUpdate(p);
 	}
 	

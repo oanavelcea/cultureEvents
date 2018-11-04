@@ -8,38 +8,36 @@
 <meta charset="utf-8" />
 <title>Inscription</title>
 
-<!-- Google Fonts -->
-<!-- <link href='https://fonts.googleapis.com/css?family=Passion+One' -->
-<!-- 	rel='stylesheet' type='text/css'> -->
-<!-- <link href='https://fonts.googleapis.com/css?family=Oxygen' -->
-<!-- 	rel='stylesheet' type='text/css'> -->
-
-
-<!-- <script -->
-<!-- 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> -->
-<!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
 
 </head>
 <body>
 
 
 	<div class="container">
+
+		<c:if test="${msg !=null }">
+			<div class="alert alert-block alert-danger messageMail">
+				<p>${msg }</p>
+			</div>
+		</c:if>
+
 		<div class="row main ">
-			<h1 class="col-lg-9 col-lg-offset-1">Créer un compte</h1>
+			<h1 class="col-lg-9 col-lg-offset-1 titre-page">Créer un compte</h1>
 
 			<div class="row col-lg-9 form-coordonnees">
 				<form:form method="post" action="validate-signup"
 					modelAttribute="signup-form" class="col-lg-10">
 
-					<p>Vos coordonnées</p>
+					<h3>Vos coordonnées</h3>
 
 					<div class="form-control form-element">
-						<form:label path="gender">Civilité :</form:label>
-						<form:select path="gender"
-							class="custom-select col-sm-3 form-control">
-							<form:option value="M">M</form:option>
-							<form:option value="MME">MME</form:option>
-						</form:select>
+						<form:label path="gender">Civilité </form:label>
+						<div>
+							<form:select path="gender" class="custom-select col-lg-2">
+								<form:option value="M">M</form:option>
+								<form:option value="MME">MME</form:option>
+							</form:select>
+						</div>
 					</div>
 
 
@@ -57,20 +55,20 @@
 						<fieldset>
 							<legend>Date de naissance</legend>
 
-							<form:label path="day" class="mr-sm-2"
-								for="inlineFormCustomSelect"> Jour : </form:label>
+							<form:label path="day" class="col-lg-1"
+								for="inlineFormCustomSelect"> Jour</form:label>
 							<form:select path="day" items="${days }"
 								class="custom-select col-sm-2" id="inlineFormCustomSelect" />
 
-							<form:label path="month" class="mr-sm-2"
-								for="inlineFormCustomSelect"> Mois : </form:label>
+							<form:label path="month" class="col-lg-1"
+								for="inlineFormCustomSelect"> Mois     </form:label>
 							<form:select path="month" items="${months }"
 								class="custom-select col-sm-2" id="inlineFormCustomSelect" />
 
-							<form:label path="year" class="mr-sm-2"
-								for="inlineFormCustomSelect"> Année : </form:label>
+							<form:label path="year" class="col-lg-1"
+								for="inlineFormCustomSelect"> Année     </form:label>
 							<form:select path="year" items="${years }"
-								class="custom-select col-sm-3" id="inlineFormCustomSelect" />
+								class="custom-select col-lg-2" id="inlineFormCustomSelect" />
 
 						</fieldset>
 					</div>
@@ -79,9 +77,9 @@
 						<form:label path="email">Email :</form:label>
 						<form:input path="email" class="form-control" />
 					</div>
-					<c:if test="${msg !=null }">
+					<c:if test="${msgMail !=null }">
 						<div class="alert alert-block alert-danger">
-							<p>${msg }</p>
+							<p>${msgMail }</p>
 						</div>
 					</c:if>
 
@@ -104,9 +102,8 @@
 	<br />
 	<br />
 
-
-
-
-
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </body>
 </html>

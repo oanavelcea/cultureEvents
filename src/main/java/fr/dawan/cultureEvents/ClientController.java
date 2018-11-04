@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -118,8 +120,32 @@ public class ClientController {
 	@RequestMapping(value = "/client/sauvegarde-coordonnees", method = RequestMethod.POST)
 	public String saveUserDetails(HttpServletRequest request, @Valid @ModelAttribute("user-form") EditUserForm form,
 			BindingResult result, Model model) {
-		if (result.hasErrors()) {
+		if (result.hasErrors() ) {
+			if(result.getFieldError().getField().toString().equals("email")) {
+				model.addAttribute("msg", "Errreur : le format de l'adresse email n'est pas correct !");
+			}
+			else {
+				model.addAttribute("msg", "Errreur : au moins un des champs n'a pas été correctement rempli !");
+			}
 			model.addAttribute("errors", result);
+			
+			List days = new ArrayList();
+			for (int i = 1; i <= 31; i++) {
+				days.add(i);
+			}
+			List months = new ArrayList<>();
+			for (int i = 1; i <= 12; i++) {
+				months.add(i);
+			}
+
+			List years = new ArrayList<>();
+			for (int i = 1900; i <= 2018; i++) {
+				years.add(i);
+			}
+			model.addAttribute("days", days);
+			model.addAttribute("months", months);
+			model.addAttribute("years", years);
+			
 			model.addAttribute("user-form", form);
 			return "client/details";
 		}
@@ -137,39 +163,30 @@ public class ClientController {
 		String date = form.getYear() + "-" + form.getMonth() + "-" + form.getDay();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-//		Date utilDate = new Date();
-//		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-//		user.setCreationDate(sqlDate);
+		String msgMail = null;
 
 		try {
 			user.setDateOfBirth(sdf.parse(date));
 			// sauvegarde des modifs en Bdd
 			userDao.update(user);
 
-		} catch (ParseException e) {
-			e.printStackTrace();
-			model.addAttribute("errors", result);
-			model.addAttribute("user-form", form);
+		} catch (Exception e) {
+			msgMail="Cette adresse mail est déjà utilisée";
+			model.addAttribute("msgMail", msgMail);
 			return "client/details";
 		}
+
+						
+		
 		return "redirect:/client/account";
 	}
 
-//	@RequestMapping(value = "/client/ajouter-event-agenda", method = RequestMethod.GET)
-//	public String ajouterAgenda(HttpServletRequest request) {
-//		if (request.getSession().getAttribute("user_id") == null) {
-//			return "redirect:/login";
-//		}
-//		
-//		return "client/agenda";
-//	}
 
 	@RequestMapping(value = "client/ajouter-event-agenda", method = RequestMethod.GET)
 	public String ajouterAgenda(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("eventId") int eventId, Model model) {
+			@RequestParam("eventId") int eventId, @RequestParam boolean contact, Model model) {
 		if (request.getSession().getAttribute("user_id") == null) {
-			return "redirect:/authenticate";
+			return "redirect:/authenticate?contact=false";
 		}
 		Long user_id = (Long) request.getSession().getAttribute("user_id");
 
@@ -185,9 +202,8 @@ public class ClientController {
 		return "redirect:/client/account";
 	}
 
-	@RequestMapping(value = "/accueil", method = RequestMethod.GET)
+	@RequestMapping(value = {"/client/accueil", "/admin/accueil"}, method = RequestMethod.GET)
 	public String accueil(Model model) {
-
 		// Appel du WS et affichage des events
 		List<Event> events;
 		try {
@@ -202,9 +218,12 @@ public class ClientController {
 	}
 	
 	@RequestMapping("/client/contact") // @requestMapping(value="/autenticate", method=RequestMethod.GET)
-	public ModelAndView showContact() {
+	public ModelAndView showContact(HttpServletRequest request) {
 		Map<String, Object> model = new HashMap<>();
-		ContactForm cf = new ContactForm("", "", "");
+		
+		String email = request.getSession().getAttribute("user_email").toString();
+		
+		ContactForm cf = new ContactForm(email, "", "");
 		model.put("contact-form", cf);
 		return new ModelAndView("client/contact", model);
 	}
@@ -212,28 +231,38 @@ public class ClientController {
 	@RequestMapping(value = "/client/envoyer-message", method = RequestMethod.POST)
 	public String sendMessage(HttpServletRequest request, @Valid @ModelAttribute("contact-form") ContactForm form,
 			BindingResult result, Model model) {
-		System.out.println("dedans");
+		String messageErreur = null;
+		String messageSuccess = null;
 		
 		if (result.hasErrors()) {
 			model.addAttribute("errors", result);
 			model.addAttribute("contact-form", form);
+			model.addAttribute("msg", "Assurez-vous que les champs soient correctement remplis");
+			
 			return "client/contact";
 		}
 		
 		String from = form.getEmail();
 		String subject = form.getSubject();
 		String message = form.getMessage();
-		
-		
-		
+
 		try {
-			EmailTools.receiveEmail(from, subject, message);
+			messageErreur = EmailTools.sendEmailToAdmin(from, subject, message);
+			
 		} catch (Exception e) {
-			System.out.println("from catch = " + from);
 			e.printStackTrace();
 		}
+		if(messageErreur != null) {
+			model.addAttribute("messageErreur", messageErreur);
+			return "client/contact";
+		}
+		else {
+			messageSuccess = "Votre message a bien �t� envoy�";
+			model.addAttribute("messageSuccess", messageSuccess);
+		}
 		
-		return null;
+		accueil(model);
+		return "client/accueil";
 		
 	}
 	
