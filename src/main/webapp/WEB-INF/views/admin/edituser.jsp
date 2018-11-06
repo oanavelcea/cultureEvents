@@ -54,18 +54,31 @@
 
 						<form:label path="day" class="col-lg-1"
 							for="inlineFormCustomSelect"> Jour</form:label>
-						<form:select path="day" items="${days }"
-							class="custom-select col-sm-2" id="inlineFormCustomSelect" />
+						<form:select path="day" class="custom-select col-sm-2"
+							id="inlineFormCustomSelect">
+							<c:forEach var="i" begin="1" end="31">
+								<form:option value="${i }"></form:option>
+							</c:forEach>
+						</form:select>
+
 
 						<form:label path="month" class="col-lg-1"
 							for="inlineFormCustomSelect"> Mois     </form:label>
-						<form:select path="month" items="${months }"
-							class="custom-select col-sm-2" id="inlineFormCustomSelect" />
+						<form:select path="month" class="custom-select col-sm-2"
+							id="inlineFormCustomSelect">
+							<c:forEach var="i" begin="1" end="12">
+								<form:option value="${i }"></form:option>
+							</c:forEach>
+						</form:select>
 
 						<form:label path="year" class="col-lg-1"
 							for="inlineFormCustomSelect"> Année     </form:label>
-						<form:select path="year" items="${years }"
-							class="custom-select col-lg-2" id="inlineFormCustomSelect" />
+						<form:select path="year"
+							class="custom-select col-lg-2" id="inlineFormCustomSelect">
+							<c:forEach var="i" begin="1900" end="2018">
+								<form:option value="${i }"></form:option>
+							</c:forEach>
+						</form:select>
 
 					</fieldset>
 				</div>

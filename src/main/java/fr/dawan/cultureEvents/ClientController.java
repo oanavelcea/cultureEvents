@@ -1,5 +1,6 @@
 package fr.dawan.cultureEvents;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,26 +93,9 @@ public class ClientController {
 		int month = Integer.parseInt(dateSplit[1]);
 		int year = Integer.parseInt(dateSplit[2]);
 
-		List days = new ArrayList();
-		for (int i = 1; i <= 31; i++) {
-			days.add(i);
-		}
-		List months = new ArrayList<>();
-		for (int i = 1; i <= 12; i++) {
-			months.add(i);
-		}
-
-		List years = new ArrayList<>();
-		for (int i = 1900; i <= 2018; i++) {
-			years.add(i);
-		}
-
 		EditUserForm form = new EditUserForm(user.getName(), user.getGender().toString(), user.getEmail(),
 				user.getPassword(), user.getAddress(), day, month, year, user.isAdmin());
 		model.addAttribute("user-form", form);
-		model.addAttribute("days", days);
-		model.addAttribute("months", months);
-		model.addAttribute("years", years);
 
 		return "client/details";
 	}
@@ -128,24 +112,7 @@ public class ClientController {
 				model.addAttribute("msg", "Errreur : au moins un des champs n'a pas été correctement rempli !");
 			}
 			model.addAttribute("errors", result);
-			
-			List days = new ArrayList();
-			for (int i = 1; i <= 31; i++) {
-				days.add(i);
-			}
-			List months = new ArrayList<>();
-			for (int i = 1; i <= 12; i++) {
-				months.add(i);
-			}
 
-			List years = new ArrayList<>();
-			for (int i = 1900; i <= 2018; i++) {
-				years.add(i);
-			}
-			model.addAttribute("days", days);
-			model.addAttribute("months", months);
-			model.addAttribute("years", years);
-			
 			model.addAttribute("user-form", form);
 			return "client/details";
 		}
@@ -173,7 +140,8 @@ public class ClientController {
 		} catch (Exception e) {
 			msgMail="Cette adresse mail est déjà utilisée";
 			model.addAttribute("msgMail", msgMail);
-			return "client/details";
+//			return "client/details";
+			displayUserDetails(form.getId(), model);
 		}
 
 						

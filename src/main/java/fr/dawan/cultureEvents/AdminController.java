@@ -93,28 +93,10 @@ public class AdminController {
 		int month = Integer.parseInt(dateSplit[1]);
 		int year = Integer.parseInt(dateSplit[2]);
 
-		List days = new ArrayList();
-		for (int i = 1; i <= 31; i++) {
-			days.add(i);
-		}
-		List months = new ArrayList<>();
-		for (int i = 1; i <= 12; i++) {
-			months.add(i);
-		}
-
-		List years = new ArrayList<>();
-		for (int i = 1900; i <= 2018; i++) {
-			years.add(i);
-		}
-
 		EditUserForm form = new EditUserForm(user.getName(), user.getGender().toString(), user.getEmail(),
 				user.getPassword(), user.getAddress(), day, month, year, user.isAdmin());
 		form.setId(user.getId());
 		model.put("edit-user-form", form);
-		
-		model.put("days", days);
-		model.put("months", months);
-		model.put("years", years);
 		model.put("user_name", user.getName());
 
 		return new ModelAndView("admin/edituser", model);
@@ -131,23 +113,6 @@ public class AdminController {
 		if (result.hasErrors()) {
 			model.put("errors", result);
 			model.put("edit-user-form", form);
-			
-			List days = new ArrayList();
-			for (int i = 1; i <= 31; i++) {
-				days.add(i);
-			}
-			List months = new ArrayList<>();
-			for (int i = 1; i <= 12; i++) {
-				months.add(i);
-			}
-
-			List years = new ArrayList<>();
-			for (int i = 1900; i <= 2018; i++) {
-				years.add(i);
-			}
-			model.put("days", days);
-			model.put("months", months);
-			model.put("years", years);
 			
 			if(result.getFieldError().getField().toString().equals("email")) {
 				model.put("msg", "Errreur : le format de l'adresse email n'est pas correct !");

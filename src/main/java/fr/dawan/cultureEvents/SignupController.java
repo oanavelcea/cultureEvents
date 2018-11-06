@@ -36,23 +36,6 @@ public class SignupController {
 		// récupération de l'objet SignUpForm
 		SignUpForm form = new SignUpForm("", "M", "", "", "", 1, 1, 1970);
 		model.put("signup-form", form);
-		List<Integer> days = new ArrayList<>();
-		for (int i = 1; i <= 31; i++) {
-			days.add(i);
-		}
-		List<Integer> months = new ArrayList<>();
-		for (int i = 1; i <= 12; i++) {
-			months.add(i);
-		}
-
-		List<Integer> years = new ArrayList<>();
-		for (int i = 1900; i <= 2018; i++) {
-			years.add(i);
-		}
-
-		model.put("days", days);
-		model.put("months", months);
-		model.put("years", years);
 
 		return new ModelAndView("signup", model);
 	}
@@ -62,25 +45,8 @@ public class SignupController {
 			BindingResult result) {
 		Map<String, Object> model = new HashMap<>();
 
-		List days = new ArrayList();
-		for (int i = 1; i <= 31; i++) {
-			days.add(i);
-		}
-		List months = new ArrayList<>();
-		for (int i = 1; i <= 12; i++) {
-			months.add(i);
-		}
-
-		List years = new ArrayList<>();
-		for (int i = 1900; i <= 2018; i++) {
-			years.add(i);
-		}
 
 		if (result.hasErrors()) {
-
-			model.put("days", days);
-			model.put("months", months);
-			model.put("years", years);
 
 			if (result.getFieldError().getField().toString().equals("email")) {
 				model.put("msg", "Errreur : le format de l'adresse email n'est pas correct !");
@@ -122,9 +88,6 @@ public class SignupController {
 			userDao.save(u);
 		} catch (Exception e) {
 			msgMail = "Cette adresse mail est déjà utilisée";
-			model.put("days", days);
-			model.put("months", months);
-			model.put("years", years);
 			model.put("msgMail", msgMail);
 			return new ModelAndView("signup", model);
 		}
